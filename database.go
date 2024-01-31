@@ -83,7 +83,7 @@ func InsertUserStore(r *http.Request) string {
 	response.Status = 400
 	db, err := SqlConn()
 	if err != nil {
-		response.Message = "error: " + err.Error()
+		response.Message = "error 1: " + err.Error()
 		return GCFReturnStruct(response)
 	}
 	err = json.NewDecoder(r.Body).Decode(&user)
@@ -96,17 +96,17 @@ func InsertUserStore(r *http.Request) string {
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
-		response.Message = "error: " + err.Error()
+		response.Message = "error 2: " + err.Error()
 		return GCFReturnStruct(response)
 	}
 
-	query := "INSERT INTO users_store (name, username, email, phone_number, license, password) VALUES (?, ?, ?, ?, ?, ?, ?)"
+	query := "INSERT INTO users_store (name, username, email, phone_number, license, password) VALUES (?, ?, ?, ?, ?, ?)"
 
 	// Lakukan penyisipan data menggunakan Prepare statement
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		// panic(err.Error())
-		response.Message = "error: " + err.Error()
+		response.Message = "error 3: " + err.Error()
 		return GCFReturnStruct(response)
 	}
 	defer stmt.Close()
@@ -114,7 +114,7 @@ func InsertUserStore(r *http.Request) string {
 	// Eksekusi perintah untuk menyisipkan data
 	_, err = stmt.Exec(user.Name, user.Username, user.Email, user.PhoneNumber, "kosong", string(hashedPassword))
 	if err != nil {
-		response.Message = "error: " + err.Error()
+		response.Message = "error 4: " + err.Error()
 		return GCFReturnStruct(response)
 	}
 
