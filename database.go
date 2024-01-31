@@ -3,7 +3,6 @@ package backren
 import (
 	"crypto/rand"
 	"database/sql"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -35,7 +34,7 @@ func LogIn(PASETOPRIVATEKEYENV string, r *http.Request) string {
 	response.Status = 400
 	db, err := SqlConn()
 	if err != nil {
-		response.Message = "error: " + err.Error()
+		response.Message = "error 1: " + err.Error()
 		return GCFReturnStruct(response)
 	}
 	err = json.NewDecoder(r.Body).Decode(&user)
@@ -54,19 +53,19 @@ func LogIn(PASETOPRIVATEKEYENV string, r *http.Request) string {
 		response.Message = "error: email tidak ada" + err.Error()
 		return GCFReturnStruct(response)
 	}
-	hashedPassword, err := hex.DecodeString(password)
-	if err != nil {
-		response.Message = "error: " + err.Error()
-		return GCFReturnStruct(response)
-	}
-	err = bcrypt.CompareHashAndPassword(hashedPassword, []byte(user.Password))
+	// hashedPassword, err := hex.DecodeString(password)
+	// if err != nil {
+	// 	response.Message = "error 2: " + err.Error()
+	// 	return GCFReturnStruct(response)
+	// }
+	err = bcrypt.CompareHashAndPassword([]byte(password), []byte(user.Password))
 	if err != nil {
 		response.Message = "error: Kata sandi tidak cocok." + err.Error()
 		return GCFReturnStruct(response)
 	}
 	tokenstring, err := Encode(user.Username, os.Getenv(PASETOPRIVATEKEYENV))
 	if err != nil {
-		response.Message = "error: " + err.Error()
+		response.Message = "error 3: " + err.Error()
 		return GCFReturnStruct(response)
 	}
 	data := map[string]interface{}{

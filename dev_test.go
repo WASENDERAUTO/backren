@@ -129,3 +129,9 @@ func TestInserUser(t *testing.T) {
 		fmt.Printf("ID: %d, Username: %s\n", id, name)
 	}
 }
+
+func TestGenerateKey(t *testing.T) {
+	privateKey, publicKey := GenerateKey()
+	fmt.Println("privateKey : ", privateKey)
+	fmt.Println("publicKey : ", publicKey)
+}
