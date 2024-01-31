@@ -48,29 +48,25 @@ func LogIn(PASETOPRIVATEKEYENV string, r *http.Request) string {
 	}
 	var email string
 	var password string
-	err = db.QueryRow("SELECT email, password FROM users_store WHERE email = ?", user.Email).Scan(&email, &password)
+	var username string
+	err = db.QueryRow("SELECT username, email, password FROM users_store WHERE email = ?", user.Email).Scan(&username, &email, &password)
 	if err != nil {
 		response.Message = "error: email tidak ada" + err.Error()
 		return GCFReturnStruct(response)
 	}
-	// hashedPassword, err := hex.DecodeString(password)
-	// if err != nil {
-	// 	response.Message = "error 2: " + err.Error()
-	// 	return GCFReturnStruct(response)
-	// }
 	err = bcrypt.CompareHashAndPassword([]byte(password), []byte(user.Password))
 	if err != nil {
 		response.Message = "error: Kata sandi tidak cocok." + err.Error()
 		return GCFReturnStruct(response)
 	}
-	tokenstring, err := Encode(user.Username, os.Getenv(PASETOPRIVATEKEYENV))
+	tokenstring, err := Encode(username, os.Getenv(PASETOPRIVATEKEYENV))
 	if err != nil {
 		response.Message = "error 3: " + err.Error()
 		return GCFReturnStruct(response)
 	}
 	data := map[string]interface{}{
 		"status":  200,
-		"message": response.Message,
+		"message": "Berhasil Login",
 		"data": map[string]interface{}{
 			"token": tokenstring,
 		},
@@ -90,7 +86,10 @@ func InsertUserStore(r *http.Request) string {
 		response.Message = "error parsing application/json: " + err.Error()
 		return GCFReturnStruct(response)
 	}
-
+	if user.Email == "" || user.Password == "" || user.Name == "" || user.PhoneNumber == "" || user.Username == "" {
+		response.Message = "mohon untuk melengkapi"
+		return GCFReturnStruct(response)
+	}
 	password := user.Password
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
