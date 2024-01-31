@@ -239,8 +239,9 @@ func GetuserByAdmin(PASETOPUBLICKEYENV string, r *http.Request) string {
 	}
 	var users []User
 	for rows.Next() {
+		var id int
 		var user User
-		if err := rows.Scan(&user); err != nil {
+		if err := rows.Scan(&id, &user.Name, &user.Username, &user.Email, &user.PhoneNumber, &user.License, &user.Password); err != nil {
 			panic(err.Error())
 		}
 		users = append(users, user)

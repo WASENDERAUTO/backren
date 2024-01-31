@@ -9,7 +9,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func TestConn31(t *testing.T) {
+func TestConn33(t *testing.T) {
 	// Buat string koneksi
 	// Format: "username:password@protocol(address)/dbname?param=value"
 	// Misalnya: "root:password@tcp(127.0.0.1:3306)/dbname"
@@ -32,7 +32,7 @@ func TestConn31(t *testing.T) {
 	fmt.Println("Connected to the database")
 
 	// Query sederhana
-	rows, err := db.Query("SELECT name, username FROM users")
+	rows, err := db.Query("SELECT * FROM users_store")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -41,15 +41,15 @@ func TestConn31(t *testing.T) {
 	// fmt.Println(rows)
 	var users []User
 	for rows.Next() {
-		// var id int
+		var id int
 		// var name string
 		var user User
-		if err := rows.Scan(&user.Name, &user.Username); err != nil {
+		if err := rows.Scan(&id, &user.Name, &user.Username, &user.Email, &user.PhoneNumber, &user.License, &user.Password); err != nil {
 			panic(err.Error())
 		}
 		users = append(users, user)
 
-		fmt.Printf("ID: %s, Username: %s\n", user.Name, user.Username)
+		fmt.Printf("name: %s, Username: %s\n", user.Name, user.Username)
 	}
 	fmt.Println("users")
 	fmt.Println(users)
