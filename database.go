@@ -93,33 +93,33 @@ func InsertUserStore(r *http.Request) string {
 		return GCFReturnStruct(response)
 	}
 	var count_username int
-	err = db.QueryRow("SELECT COUNT(*) FROM users WHERE username = ?", user.Username).Scan(&count_username)
+	err = db.QueryRow("SELECT COUNT(*) FROM users_store WHERE username = ?", user.Username).Scan(&count_username)
 	if err != nil {
 		response.Message = "error 2 username: " + err.Error()
 		return GCFReturnStruct(response)
 	}
 	if count_username > 0 {
-		response.Message = "error 2 count_username: " + err.Error()
+		response.Message = "username sudah terdaftar"
 		return GCFReturnStruct(response)
 	}
 	var count_email int
-	err = db.QueryRow("SELECT COUNT(*) FROM users WHERE email = ?", user.Email).Scan(&count_email)
+	err = db.QueryRow("SELECT COUNT(*) FROM users_store WHERE email = ?", user.Email).Scan(&count_email)
 	if err != nil {
 		response.Message = "error 2 email: " + err.Error()
 		return GCFReturnStruct(response)
 	}
 	if count_email > 0 {
-		response.Message = "error 2 count_email: " + err.Error()
+		response.Message = "email sudah terdaftar"
 		return GCFReturnStruct(response)
 	}
 	var count_phone_number int
-	err = db.QueryRow("SELECT COUNT(*) FROM users WHERE phone_number = ?", user.PhoneNumber).Scan(&count_phone_number)
+	err = db.QueryRow("SELECT COUNT(*) FROM users_store WHERE phone_number = ?", user.PhoneNumber).Scan(&count_phone_number)
 	if err != nil {
 		response.Message = "error 2 phone_number: " + err.Error()
 		return GCFReturnStruct(response)
 	}
 	if count_phone_number > 0 {
-		response.Message = "error 2 count_phone_number: " + err.Error()
+		response.Message = "nomor hp sudah terdaftar" + err.Error()
 		return GCFReturnStruct(response)
 	}
 	password := user.Password
