@@ -92,7 +92,7 @@ func InsertUserStore(r *http.Request) string {
 		response.Message = "mohon untuk melengkapi"
 		return GCFReturnStruct(response)
 	}
-	rows_username, err := db.Query("SELECT * FROM users_store WHERE username = ?", user.Username)
+	rows_username, err := db.Query("SELECT username FROM users_store WHERE username = ?", user.Username)
 	if err != nil {
 		response.Message = "error: " + err.Error()
 		return GCFReturnStruct(response)
@@ -109,7 +109,7 @@ func InsertUserStore(r *http.Request) string {
 		response.Message = "error: " + err.Error()
 		return GCFReturnStruct(response)
 	}
-	rows_email, err := db.Query("SELECT * FROM users_store WHERE email = ?", user.Email)
+	rows_email, err := db.Query("SELECT email FROM users_store WHERE email = ?", user.Email)
 	if err != nil {
 		response.Message = "error: " + err.Error()
 		return GCFReturnStruct(response)
@@ -126,7 +126,7 @@ func InsertUserStore(r *http.Request) string {
 		response.Message = "error: " + err.Error()
 		return GCFReturnStruct(response)
 	}
-	rows_phone_number, err := db.Query("SELECT * FROM users_store WHERE phone_number = ?", user.PhoneNumber)
+	rows_phone_number, err := db.Query("SELECT phone_number FROM users_store WHERE phone_number = ?", user.PhoneNumber)
 	if err != nil {
 		response.Message = "error: " + err.Error()
 		return GCFReturnStruct(response)

@@ -66,6 +66,20 @@ func TestConn33(t *testing.T) {
 	}
 	fmt.Printf("name: %s, Username: %s, role: %s, limit_device: %s\n", name, username, role, limit_device)
 
+	rows_username, err := db.Query("SELECT username FROM users_store WHERE username = ?", "budii")
+	if err != nil {
+		fmt.Println(err)
+	}
+	var count_username int
+	for rows_username.Next() {
+		count_username++
+	}
+	if count_username > 0 {
+		fmt.Println(count_username)
+	}
+	if err := rows_username.Err(); err != nil {
+		fmt.Println(err)
+	}
 }
 
 func TestInserUser(t *testing.T) {
