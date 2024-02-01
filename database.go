@@ -3,6 +3,7 @@ package backren
 import (
 	"crypto/rand"
 	"database/sql"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -171,7 +172,7 @@ func InsertUserApp(PASETOPUBLICKEYENV string, r *http.Request) string {
 		return GCFReturnStruct(response)
 	}
 
-	license := username + string(random)
+	license := username + hex.EncodeToString(random)
 
 	_, err = db.Exec("UPDATE users_store SET license = ? WHERE username = ?", license, username)
 	if err != nil {

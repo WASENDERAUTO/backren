@@ -1,7 +1,9 @@
 package backren
 
 import (
+	"crypto/rand"
 	"database/sql"
+	"encoding/hex"
 	"fmt"
 	"testing"
 
@@ -134,4 +136,18 @@ func TestGenerateKey(t *testing.T) {
 	privateKey, publicKey := GenerateKey()
 	fmt.Println("privateKey : ", privateKey)
 	fmt.Println("publicKey : ", publicKey)
+}
+
+func TestGeneratLisen(t *testing.T) {
+	var username = "daslan"
+
+	random := make([]byte, 16)
+	_, err := rand.Read(random)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		license := username + hex.EncodeToString(random)
+		fmt.Println(license)
+	}
+
 }
