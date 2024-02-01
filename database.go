@@ -119,7 +119,7 @@ func InsertUserStore(r *http.Request) string {
 		return GCFReturnStruct(response)
 	}
 	if count_phone_number > 0 {
-		response.Message = "nomor hp sudah terdaftar" + err.Error()
+		response.Message = "nomor hp sudah terdaftar"
 		return GCFReturnStruct(response)
 	}
 	password := user.Password
