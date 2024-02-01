@@ -92,6 +92,57 @@ func InsertUserStore(r *http.Request) string {
 		response.Message = "mohon untuk melengkapi"
 		return GCFReturnStruct(response)
 	}
+	rows_username, err := db.Query("SELECT * FROM users_store WHERE username = ?", user.Username)
+	if err != nil {
+		response.Message = "error: " + err.Error()
+		return GCFReturnStruct(response)
+	}
+	var count_username int
+	for rows_username.Next() {
+		count_username++
+	}
+	if count_username > 0 {
+		response.Message = "error: username sudah terdaftar" + err.Error()
+		return GCFReturnStruct(response)
+	}
+	if err := rows_username.Err(); err != nil {
+		response.Message = "error: " + err.Error()
+		return GCFReturnStruct(response)
+	}
+	rows_email, err := db.Query("SELECT * FROM users_store WHERE email = ?", user.Email)
+	if err != nil {
+		response.Message = "error: " + err.Error()
+		return GCFReturnStruct(response)
+	}
+	var count_email int
+	for rows_email.Next() {
+		count_email++
+	}
+	if count_email > 0 {
+		response.Message = "error: email sudah terdaftar" + err.Error()
+		return GCFReturnStruct(response)
+	}
+	if err := rows_email.Err(); err != nil {
+		response.Message = "error: " + err.Error()
+		return GCFReturnStruct(response)
+	}
+	rows_phone_number, err := db.Query("SELECT * FROM users_store WHERE phone_number = ?", user.PhoneNumber)
+	if err != nil {
+		response.Message = "error: " + err.Error()
+		return GCFReturnStruct(response)
+	}
+	var count_phone_number int
+	for rows_phone_number.Next() {
+		count_phone_number++
+	}
+	if count_phone_number > 0 {
+		response.Message = "error: nomor hp sudah terdaftar" + err.Error()
+		return GCFReturnStruct(response)
+	}
+	if err := rows_phone_number.Err(); err != nil {
+		response.Message = "error: " + err.Error()
+		return GCFReturnStruct(response)
+	}
 	password := user.Password
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
