@@ -69,7 +69,8 @@ func LogIn(PASETOPRIVATEKEYENV string, r *http.Request) string {
 		"status":  200,
 		"message": "Berhasil Login",
 		"data": map[string]interface{}{
-			"token": tokenstring,
+			"token":    tokenstring,
+			"username": username,
 		},
 	}
 	return GCFReturnStruct(data)
